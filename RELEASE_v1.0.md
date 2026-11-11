@@ -8,6 +8,7 @@
 - **一个开关两种模式**：`use_rag=True` 基于资料 / `False` 纯对话，同一套代码；`prefer="local" | "api"` 决定先找本地还是云端。
 - **双引擎双向回退**：本地 Ollama 挂了自动切云端，云端不可用（断网/没密钥/密钥失效）自动切本地，切换原因与耗时打印在日志里。
 - **演示不中断**：三问三答覆盖语法点、数字指标、课堂活动；任一问失败打印「[运行失败] 原因」后继续，不会三问三崩。
+- **出处可单独调出**：`--sources` 把命中的片段、段号与相似度单独列出来，答案与依据分开核对；`--k` 可调检索条数。
 - **记录可复核**：`answer_log.md` 留了 3 问 × 开/关 RAG × 本地/云端共 8 组原始输出。
 
 ## 怎么装
@@ -37,6 +38,9 @@ python week08_助手v1.0/assistant_v1.py --prefer api
 # 单问 + 关掉检索做对比
 python week08_助手v1.0/assistant_v1.py --ask "HSK4 词汇量要求是多少？" --prefer api
 python week08_助手v1.0/assistant_v1.py --ask "HSK4 词汇量要求是多少？" --prefer api --no-rag
+
+# 把出处单独调出来（段号 + 相似度 + 片段预览），可配合 --k 3 调检索条数
+python week08_助手v1.0/assistant_v1.py --ask "HSK4 词汇量要求是多少？" --prefer api --sources --k 3
 ```
 
 ## 实测对比（同一批问题，开/关 RAG）
@@ -63,8 +67,10 @@ python week08_助手v1.0/assistant_v1.py --ask "HSK4 词汇量要求是多少？
 | `week08_助手v1.0/answer_log.md` | 演示记录 8 组（四要素：问题/模式/引擎/输出与点评） |
 | `week08_助手v1.0/README.md` | 四段式 README（功能/怎么装/怎么用/已知问题） |
 | `week08_助手v1.0/requirements.txt` | 依赖清单 |
-| `week08_助手v1.0/rag_pipeline_mapping.md` | 官方 RAG 流水线 ↔ 本项目的 5 行映射表 |
-| `week08_助手v1.0/reflect.md` | 官方教程对照的 300 字反思 |
+| `week08_助手v1.0/rag_mapping.md` | 官方 5 步流水线 ↔ llm-universe 章节 ↔ 我的真实函数名 |
+| `week08_助手v1.0/reflect.md` | 官方教程对照的 300 字反思（答三问） |
+| `week08_助手v1.0/read_notes.md` | 官方 Retrieval 文档与 llm-universe C3/C4 的三句阅读笔记 |
+| `week08_助手v1.0/改造运行记录.txt` | B 路径改造点（`--sources` / `--k`）的终端运行证据 |
 | `week08_助手v1.0/peer_review.md` | 指定对象互评表（只描述现象） |
 | `week08_助手v1.0/w8_说明_已知问题为什么要诚实写.md` | 200 字说明 |
 | `week08_助手v1.0/w9_预习_工具清单.md` | W9 预习：两个待接入工具（输入/输出） |
